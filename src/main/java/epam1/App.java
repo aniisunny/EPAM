@@ -1,11 +1,8 @@
 package epam1;
-//import org.graalvm.compiler.nodes.NodeView;
+import org.graalvm.compiler.nodes.NodeView;
 
 import java.util.*;
-/**
- * Hello world!
- *
- */
+
 class Sweets{
     private String name;
     private int sweetness, weight;
@@ -46,18 +43,45 @@ public class App
 
         Scanner input = new Scanner(System.in);
         Sweets g;
-        int i = 1, sweetness, weight, totalwgt = 0, wgt;
-        String name, more;
+        int i = 1, sweetness, weight, totalwgt = 0, wgt, n;
+        String more,name;
         double size;
         do {
             System.out.println("Gift " + i + " :");
             g1 = new ArrayList<>();
             wgt = 0;
             do {
-                System.out.print("Name : "); name = input.next();
-                System.out.print("Sweetness : "); sweetness = input.nextInt();
-                System.out.print("Size : "); size = input.nextDouble();
-                System.out.print("Weight : "); weight = input.nextInt();
+                more = "sad";
+                System.out.print("What is it?\n1. Chocolate\t2. Rasmalai \t 3. Barfi\t 4. Kaju Katli : ");
+                n = input.nextInt();
+
+                switch (n){
+                    case 1 :
+                        name = "Chocolate";
+                        break;
+
+                    case 2 :
+                        name = "Rasmalai";
+                        break;
+
+                    case 3 :
+                        name = "Barfi";
+                        break;
+
+                    case 4 :
+                        name = "Kaju Katli";
+                        break;
+
+                    default:
+                        name = "Unknown";
+                }
+
+                System.out.print("Sweetness : ");
+                sweetness = input.nextInt();
+                System.out.print("Size : ");
+                size = input.nextDouble();
+                System.out.print("Weight : ");
+                weight = input.nextInt();
 
                 wgt += weight;
 
@@ -75,43 +99,71 @@ public class App
             ++i;
         } while (!more.equals("n"));
 
-        String sweet;
-        System.out.println("What do you want to do?\n 1. Get total weight\n 2. Sort the Sweets and get output\n 3. Search for sweets in the Gifts");
-        int k = input.nextInt();
-        switch (k) {
-            case 1:
-                System.out.println("Total weight of all the gifts combined = " + totalwgt);
-                break;
+        boolean br = false;
+        do {
+            System.out.println("What do you want to do?\n 1. Get total weight\n 2. Sort the Sweets and get output\n 3. Search for sweets in the Gifts\n 4. Exit");
+            int k = input.nextInt();
+            switch (k) {
+                case 1:
+                    System.out.println("Total weight of all the gifts combined = " + totalwgt);
+                    break;
 
-            case 2:
-                System.out.println("How do you want to sort the chocolate in the gifts? \n 1. Size\n 2. Sweetness\n 3. Weight");
-                i = input.nextInt();
-                switch (i) {
-                    case 1:
-                        showSizeSort(gifts);
-                        break;
+                case 2:
+                    System.out.println("How do you want to sort the chocolate in the gifts? \n 1. Size\n 2. Sweetness\n 3. Weight");
+                    i = input.nextInt();
+                    switch (i) {
+                        case 1:
+                            showSizeSort(gifts);
+                            break;
 
-                    case 2:
-                        showSweetSort(gifts);
-                        break;
+                        case 2:
+                            showSweetSort(gifts);
+                            break;
 
-                    case 3:
-                        showWgtSort(gifts);
-                        break;
+                        case 3:
+                            showWgtSort(gifts);
+                            break;
 
-                    default:
-                        System.out.println("Select from 1 or 2 from above... Retry");
-                }
-                break;
+                        default:
+                            System.out.println("Select from 1 or 2 from above... Retry");
+                    }
+                    break;
 
-            case 3:
-                sweet = input.next();
-                searchingSweet(gifts,sweet);
-                break;
+                case 3:
+                    System.out.println("What is it?\n1. Chocolate\t 2. Rasmalai\t 3. Barfi\t 4. Kaju Katli : ");
+                    n = input.nextInt();
+                    switch (n) {
+                        case 1:
+                            name = "Chocolate";
+                            break;
 
-            default:
-                System.out.println("Please enter your selection number(1/2/3) from above... \nRetry");
-        }
+                        case 2:
+                            name = "Rasmalai";
+                            break;
+
+                        case 3:
+                            name = "Barfi";
+                            break;
+
+                        case 4:
+                            name = "Kaju Katli";
+                            break;
+
+                        default:
+                            name = "Unknown";
+                    }
+                    searchingSweet(gifts, name);
+                    break;
+
+                case 4:
+                    br = true;
+                    break;
+
+                default:
+                    System.out.println("Please enter your selection number(1/2/3) from above... \nRetry");
+            }
+
+        } while (!br);
     }
 
     private static void searchingSweet(List<List<Sweets>> gifts, String name){
