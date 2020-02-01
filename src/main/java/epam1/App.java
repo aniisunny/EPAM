@@ -3,35 +3,88 @@ import org.graalvm.compiler.nodes.NodeView;
 
 import java.util.*;
 
-class Sweets{
-    private String name;
+interface Sweets{
+    String getName();
+    double getSize();
+    int getWeight();
+    int getSweetness();
+
+}
+
+class Chocolate implements Sweets{
     private int sweetness, weight;
     private double size;
 
-    Sweets(String name, double s1, int s2, int w){
-        setName(name);
-        setSize(s1);
-        setSweetness(s2);
-        setWeight(w);
+    Chocolate(double s1, int s2, int w) {
+        sweetness = s2;
+        size = s1;
+        weight = w;
     }
+    @Override
+    public String getName() { return "Chocolate"; }
+    @Override
+    public double getSize(){ return size ; }
+    @Override
+    public int getWeight(){ return weight ; }
+    @Override
+    public int getSweetness() { return sweetness; }
+}
 
-    private void setWeight(int w) { weight = w ; }
-    private void setName(String n) {
-        name = n;
-    }
-    private void setSize(double s) {
-        size = s;
-    }
-    private void setSweetness(int s) {
-        sweetness = s;
-    }
+class Rasmalai implements Sweets{
+    private int sweetness, weight;
+    private double size;
 
-    String getName() { return name ; }
-    double getSize(){ return size ; }
-    int getWeight(){ return weight ; }
-    int getSweetness() {
-        return sweetness;
+    Rasmalai(double s1, int s2, int w) {
+        sweetness = s2;
+        size = s1;
+        weight = w;
     }
+    @Override
+    public String getName() { return "Rasmalai"; }
+    @Override
+    public double getSize(){ return size ; }
+    @Override
+    public int getWeight(){ return weight ; }
+    @Override
+    public int getSweetness() { return sweetness; }
+}
+
+class Kajukatli implements Sweets{
+    private int sweetness, weight;
+    private double size;
+
+    Kajukatli(double s1, int s2, int w) {
+        sweetness = s2;
+        size = s1;
+        weight = w;
+    }
+    @Override
+    public String getName() { return "Kaju-Katli"; }
+    @Override
+    public double getSize(){ return size ; }
+    @Override
+    public int getWeight(){ return weight ; }
+    @Override
+    public int getSweetness() { return sweetness; }
+}
+
+class Barfi implements Sweets{
+    private int sweetness, weight;
+    private double size;
+
+    Barfi(double s1, int s2, int w) {
+        sweetness = s2;
+        size = s1;
+        weight = w;
+    }
+    @Override
+    public String getName() { return "Barfi"; }
+    @Override
+    public double getSize(){ return size ; }
+    @Override
+    public int getWeight(){ return weight ; }
+    @Override
+    public int getSweetness() { return sweetness; }
 }
 
 public class App
@@ -42,39 +95,17 @@ public class App
         List<Sweets> g1;
 
         Scanner input = new Scanner(System.in);
-        Sweets g;
         int i = 1, sweetness, weight, totalwgt = 0, wgt, n;
         String more,name;
         double size;
         do {
             System.out.println("Gift " + i + " :");
-            g1 = new ArrayList<>();
+            g1 = new ArrayList<Sweets>();
             wgt = 0;
             do {
                 more = "sad";
-                System.out.print("What is it?\n1. Chocolate\t2. Rasmalai \t 3. Barfi\t 4. Kaju Katli : ");
+                System.out.print("What is it?\n1. Chocolate\t2. Rasmalai \t 3. Barfi\t 4. Kaju-Katli : ");
                 n = input.nextInt();
-
-                switch (n){
-                    case 1 :
-                        name = "Chocolate";
-                        break;
-
-                    case 2 :
-                        name = "Rasmalai";
-                        break;
-
-                    case 3 :
-                        name = "Barfi";
-                        break;
-
-                    case 4 :
-                        name = "Kaju Katli";
-                        break;
-
-                    default:
-                        name = "Unknown";
-                }
 
                 System.out.print("Sweetness : ");
                 sweetness = input.nextInt();
@@ -85,8 +116,26 @@ public class App
 
                 wgt += weight;
 
-                g = new Sweets(name, size, sweetness,weight);
-                g1.add(g);
+                switch (n){
+                    case 1 :
+                        g1.add(new Chocolate(size,sweetness,weight));
+                        break;
+
+                    case 2 :
+                        g1.add(new Rasmalai(size,sweetness,weight));
+                        break;
+
+                    case 3 :
+                        g1.add(new Barfi(size,sweetness,weight));
+                        break;
+
+                    case 4 :
+                        g1.add(new Kajukatli(size,sweetness,weight));
+                        break;
+
+                    default:
+                        System.out.println("Wrong Input");
+                }
 
                 System.out.print("More? (y/n) : ");
                 more = input.next();
@@ -146,7 +195,7 @@ public class App
                             break;
 
                         case 4:
-                            name = "Kaju Katli";
+                            name = "Kaju-Katli";
                             break;
 
                         default:
@@ -233,56 +282,36 @@ public class App
     }
 
     private static List<Sweets> sizeSort(List<Sweets> s){
-        List<Sweets> arr = new ArrayList<>();
-
-        Sweets l, ll;
-
-        for(int i = 0 ; i < s.size() ; i++) {
-            l = s.get(i) ;
-            for (int j = i+1; j < s.size(); j++) {
-                ll = s.get(j);
-                if (l.getSize() > ll.getSize()) {
-                    l = ll;
-                }
+        Collections.sort(s, new Comparator<Sweets>() {
+            @Override
+            public int compare(Sweets sweets, Sweets t1) {
+                return Double.compare(sweets.getSize(), t1.getSize());
             }
-            arr.add(l);
-        }
-        return arr;
+        });
+
+        return s;
     }
 
     private static List<Sweets> sweetSort(List<Sweets> s){
-        List<Sweets> arr = new ArrayList<>();
-
-        Sweets l, ll;
-
-        for(int i = 0 ; i < s.size() ; i++) {
-            l = s.get(i) ;
-            for (int j = i+1; j < s.size(); j++) {
-                ll = s.get(j);
-                if (l.getSweetness() > ll.getSweetness()) {
-                    l = ll;
-                }
+        Collections.sort(s, new Comparator<Sweets>() {
+            @Override
+            public int compare(Sweets sweets, Sweets t1) {
+                return sweets.getSweetness()-t1.getSweetness();
             }
-            arr.add(l);
-        }
-        return arr;
+        });
+
+        return s;
     }
 
     private static List<Sweets> wgtSort(List<Sweets> s){
-        List<Sweets> arr = new ArrayList<>();
 
-        Sweets l, ll;
-
-        for(int i = 0 ; i < s.size() ; i++) {
-            l = s.get(i) ;
-            for (int j = i+1; j < s.size(); j++) {
-                ll = s.get(j);
-                if (l.getWeight() > ll.getWeight()) {
-                    l = ll;
-                }
+        Collections.sort(s, new Comparator<Sweets>() {
+            @Override
+            public int compare(Sweets sweets, Sweets t1) {
+                return sweets.getWeight()-t1.getWeight();
             }
-            arr.add(l);
-        }
-        return arr;
+        });
+
+        return s;
     }
 }
